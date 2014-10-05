@@ -1,1 +1,1 @@
-docker build -t sentora:latest .
+docker build --rm -t sentora:setup .

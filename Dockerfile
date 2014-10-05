@@ -14,6 +14,7 @@ RUN wget https://raw.githubusercontent.com/sentora/sentora-installers/master/sen
 
 # Patch the installer
 #RUN perl -pi -e 's/-yqq install mysql-server/-y install mysql-server-5.5 mysql-server/' sentora_install_ubuntu.sh
+RUN chmod +x /sentora_install_ubuntu.sh
 
 ADD launch.sh launch.sh
 RUN chmod +x /launch.sh

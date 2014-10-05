@@ -1,9 +1,22 @@
 if [ "$1" == "setup" ]; then
-	ENTRYPOINT='--entrypoint="/bin/bash"'
+	ENTRYPOINT='--entrypoint="/sentora_install_ubuntu.sh"'
+	IMAGE_VERSION="setup"
+	OPTS="it"
 else
 	ENTRYPOINT='--entrypoint="/launch.sh"'
+	IMAGE_VERSION="latest"
+	OPTS="dit"
 fi
 
-docker run -it $ENTRYPOINT \
-        -p 20:20 -p 21:21 -p 25:25 -p 53:53 -p 8080:80 -p 110:110 -p 143:143 -p 443:443 -p 3306:3306 \
-        sentora:0.0.1
+# Run the docker instance!
+docker run -$OPTS $ENTRYPOINT \
+        -p 20:20 -p 21:21 -p 25:25 -p 53:53 -p 8080:80 -p 9080:9080 -p 110:110 -p 143:143 -p 443:443 -p 3306:3306 \
+        sentora:$IMAGE_VERSION
+
+# Finish setup
+if [ "$1" == "setup" ]; then
+	SETUP_CONTAINER=`docker ps -a | grep -m 1 "sentora:$IMAGE_VERSION" | awk '{print $1;}'`
+	echo "Tagging $SETUP_CONTAINER as latest"
+	docker commit $SETUP_CONTAINER sentora:latest
+	echo "Setup complete"
+fi
