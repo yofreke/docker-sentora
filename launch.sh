@@ -1,3 +1,4 @@
+#!/bin/bash
 echo -e "\n# Starting/restarting services"
 php /etc/zpanel/panel/bin/daemon.php
 service apache2 restart
