@@ -21,14 +21,15 @@ BACKUP_FOLDERS = [
   '/var/zpanel',
   '/var/backups',
   '/etc/zpanel/panel',
-
-  # Maybe not this
-#'/run',
 ]
 
 def run_cmd(cmd):
   print "Running cmd: '%s'" % (cmd,)
-  p = subprocess.Popen(cmd.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  p = subprocess.Popen(
+    cmd.split(' '),
+    stdout=subprocess.PIPE,
+    stderr=subprocess.PIPE
+    )
   stdout, stderr = p.communicate()
   if p.returncode != 0:
     print 'error running diff'
@@ -65,8 +66,13 @@ elif COMMAND == '-b':
   if not os.path.exists(BACKUP_DIR):
     print 'backup dir %s does not exist' % (BACKUP_DIR,)
     sys.exit(2)
+  # keep people from overwriting their entire main OS
+  if BACKUP_DIR == '/':
+    print "Cannot backup to '/'"
+    sys.exit(3)
+  # check each folder and run the docker cp command to move files from container
+  # to host machine
   for folder in BACKUP_FOLDERS:
-#    host_folder = folder
     host_folder = folder[:folder.rfind('/')]
     if len(host_folder) == 0:
       host_folder = '/'
@@ -84,15 +90,14 @@ elif COMMAND == '-g':
   if not os.path.exists(BACKUP_DIR):
     print 'backup dir %s does not exist' % (BACKUP_DIR,)
     sys.exit(2)
+  # start building the output string, will contain a series of volume flags
   output = ''
   for folder in BACKUP_FOLDERS:
     host_folder = folder
     if host_folder[0] == '/':
       host_folder = host_folder[1:]
     host_dir = os.path.join(BACKUP_DIR, host_folder)
-    container_dir = folder#folder[:folder.rfind('/')]
-#    if len(container_dir) == 0:
-#      container_dir = '/'
+    container_dir = folder
     output += '-v %s:%s ' % (host_dir, container_dir)
   print output
 

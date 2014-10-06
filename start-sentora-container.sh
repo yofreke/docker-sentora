@@ -13,6 +13,7 @@ else
   OPTS="dit"
 fi
 
+# Check if we want to load in data from a backup volume
 if [ -e "$1" ]; then
   VOLUMES=`$DIR/backup.py -g $1`
   echo "Running with attached volumes: $VOLUMES"
