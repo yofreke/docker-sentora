@@ -10,11 +10,10 @@ RUN ln -s -f /bin/true /usr/bin/chfn
 RUN apt-get install -y git-core python2.7 python-pip nano man curl wget
 
 # Download the sentora installer script
-RUN wget https://raw.githubusercontent.com/sentora/sentora-installers/master/sentora_install_ubuntu.sh
+RUN wget http://sentora.org/install -O sentora_install.sh
 
 # Patch the installer
-#RUN perl -pi -e 's/-yqq install mysql-server/-y install mysql-server-5.5 mysql-server/' sentora_install_ubuntu.sh
-RUN chmod +x /sentora_install_ubuntu.sh
+RUN chmod +x /sentora_install.sh
 
 ADD launch.sh launch.sh
 RUN chmod +x /launch.sh
