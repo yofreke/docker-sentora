@@ -4,7 +4,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 if [ "$1" == "setup" ]; then
-  ENTRYPOINT='--entrypoint="/sentora_install_ubuntu.sh"'
+  ENTRYPOINT='--entrypoint="/sentora_install.sh"'
   IMAGE_VERSION="setup"
   OPTS="it"
 else
