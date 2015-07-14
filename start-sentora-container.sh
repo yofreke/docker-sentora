@@ -7,6 +7,9 @@ if [ "$1" == "setup" ]; then
   ENTRYPOINT='--entrypoint="/sentora_install.sh"'
   IMAGE_VERSION="setup"
   OPTS="it"
+
+  echo "Getting sentora version"
+  VER=`curl -L http://sentora.org/install 2>/dev/null | perl -ln -e'/SENTORA_INSTALLER_VERSION="(.*?)"/ && print $1'`
 else
   ENTRYPOINT='--entrypoint="/launch.sh"'
   IMAGE_VERSION="latest"
@@ -31,7 +34,12 @@ docker run -$OPTS $ENTRYPOINT \
 # Finish setup
 if [ "$1" == "setup" ]; then
   SETUP_CONTAINER=`docker ps -a | grep -m 1 "sentora:$IMAGE_VERSION" | awk '{print $1;}'`
+
   echo "Tagging $SETUP_CONTAINER as latest"
   docker commit $SETUP_CONTAINER sentora:latest
+
+  echo "Tagging $SETUP_CONTAINER as $VER"
+  docker commit $SETUP_CONTAINER sentora:$VER
+
   echo "Setup complete"
 fi
