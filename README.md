@@ -1,5 +1,9 @@
-docker-sentora
-==============
+## Note to people looking for dockerized hosting panels
+
+I have made another project for a different hosting panel: <https://github.com/yofreke/docker-froxlor>.  I personally had too many problems with the sentora deployment to make it work long term, and am now trying out froxlor.  Feel free to still use this repo as a guide for how to work with sentora, but there will likely be no future updates.
+
+
+# docker-sentora
 
 A simple project to get sentora running inside a docker container.  Very premature, help welcome.
 
